@@ -33,31 +33,41 @@ public class RankingController : ControllerBase
         _context.SaveChanges();
         //     return Ok(rank);
 
-        return CreatedAtAction(nameof(ReadByID), new { Id = rank.Id }, rankingDTO);
 
+        return Ok(rank);
     }
 
     [HttpGet]
-    public IEnumerable<ReadRankingDTO> Read([FromQuery] int take = 10)
+    public IEnumerable<ReadRankingDTO> Read([FromQuery] int take = 10, [FromBody] int skip = 0)
     {
 
-        return _mapper.Map<List<ReadRankingDTO>>(_context.RankingBoard.FromSqlRaw($"SELECT Id, UserName, SurvivalTime FROM RankingBoard ORDER BY RankingBoard.SurvivalTime DESC").Take(take).ToList());
+        return _mapper.Map<List<ReadRankingDTO>>(_context.RankingBoard.FromSqlRaw($"SELECT Id, UserName, SurvivalTime FROM RankingBoard ORDER BY RankingBoard.SurvivalTime ").Skip(skip).Take(take).ToList());
 
 
 
     }
-
-    [HttpGet("{id}")]
-    public IActionResult ReadByID(int id)
+    [HttpDelete("{id}")]
+    public IActionResult DeleteData(int id)
     {
+
         Ranking rank = _context.RankingBoard.FirstOrDefault((rank => rank.Id == id));
-        if (rank != null)
+
+
+        if (id == null)
         {
-            ReadRankingDTO rankDTO = _mapper.Map<ReadRankingDTO>(rank);
-            return Ok(rankDTO);
+            return NotFound();
 
         }
-        return NotFound();
+
+
+        _context.Remove(rank);
+        _context.SaveChanges();
+        return NoContent();
+
+
     }
+
+
+
 
 }
