@@ -6,16 +6,14 @@ Este projeto é uma API Rest para o jogo de sobrevivência a Zumbis da Alura. o 
     - ID
     - User Name
     - Survival Time
-    - 
     
-    Serão exibidos o placar com os 10 melhores jogadores:
-    
-    - maior tempo de sobrevivência
+    Serão exibidos o placar com os 10 melhores jogadores. Isto será definido pelo tempo de sobrevivência ( Survival Time)
 
 
 Get : base/ranking - Captura os 10 primeiros jogadores
+Get: base/ranking?skip=0&take=2 : Exemplo com paginação. Nesse caso ele pula nenhum registro e pega os dois primeiros na ordem de maior pontuação.
 
 Post: base/ranking - Cria um novo registro
 
-Delete: base/ranking?skip=10 - Deleta a partir do décimo primeiro usuário
+Delete: base/id - Deleta um registro pelo seu id
 
