@@ -31,14 +31,14 @@ public class RankingController : ControllerBase
         Ranking rank = _mapper.Map<Ranking>(rankingDTO);
         _context.RankingBoard.Add(rank);
         _context.SaveChanges();
-        //     return Ok(rank);
+
 
 
         return Ok(rank);
     }
 
     [HttpGet]
-    public IEnumerable<ReadRankingDTO> Read([FromQuery] int take = 10, [FromBody] int skip = 0)
+    public IEnumerable<ReadRankingDTO> Read([FromQuery] int take = 10, [FromQuery] int skip = 0)
     {
 
         return _mapper.Map<List<ReadRankingDTO>>(_context.RankingBoard.FromSqlRaw($"SELECT Id, UserName, SurvivalTime FROM RankingBoard ORDER BY RankingBoard.SurvivalTime ").Skip(skip).Take(take).ToList());
